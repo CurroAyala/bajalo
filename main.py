@@ -1,4 +1,5 @@
 import os
+import readline
 import subprocess
 import yt_dlp
 from mutagen.easyid3 import EasyID3
@@ -121,7 +122,7 @@ def descargar_album_youtube(url, nombre_album=""):
     archivos_descargados = []
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        print("\t>> Descargando álbum / playlist...")
+        print("\t>> Descargando álbum...")
 
         try:
             info = ydl.extract_info(url, download=True)
@@ -163,6 +164,7 @@ def descargar_playlist_youtube(url, nombre_playlist=""):
         'outtmpl': f'{DIRECTORIO_SALIDA}/%(playlist_title,playlist)s/%(artist,uploader)s - %(title)s.%(ext)s',
         'logger': logger(),
 
+        'ignoreerrors': True,
         'quiet': True,
         'no_warnings': True,
 
@@ -243,9 +245,9 @@ if __name__ == "__main__":
             if eleccion == "1":
                 print("")
                 print("\t>> Opción seleccionada: DESCARGAR UN AUDIO.")
-                url = input("\t>> Introduce la URL: ")
-                nombre = input("\t>> Indica cómo nombrar el archivo (dejar vacío para asignar el predeterminado): ")
-                nombre_album = input("\t>> Indica qué album asignar (dejar vacío para no asignar): ")
+                url = input("\t>> Introduce la URL: ").strip()
+                nombre = input("\t>> Indica cómo nombrar el archivo (dejar vacío para asignar el predeterminado): ").strip()
+                nombre_album = input("\t>> Indica qué album asignar (dejar vacío para no asignar): ").strip()
                 
                 archivo = descargar_audio_youtube(url,nombre)
                 if archivo and os.path.exists(archivo):
@@ -258,8 +260,8 @@ if __name__ == "__main__":
             elif eleccion == "2":
                 print("")
                 print("\t>> Opción seleccionada: DESCARGAR UN ÁLBUM.")
-                url = input("\t>> Introduce la URL del álbum: ")
-                nombre_album = input("\t>> Indica cómo nombrar el álbum (dejar vacío para asignar el predeterminado): ")
+                url = input("\t>> Introduce la URL del álbum: ").strip()
+                nombre_album = input("\t>> Indica cómo nombrar el álbum (dejar vacío para asignar el predeterminado): ").strip()
 
                 archivos = descargar_album_youtube(url, nombre_album)
                 if archivos:
@@ -271,8 +273,8 @@ if __name__ == "__main__":
             elif eleccion == "3":
                 print("")
                 print("\t>> Opción seleccionada: DESCARGAR UNA PLAYLIST.")
-                url = input("\t>> Introduce la URL de la playlist: ")
-                nombre_playlist = input("\t>> Indica cómo nombrar la playlist (dejar vacío para asignar el predeterminado): ")
+                url = input("\t>> Introduce la URL de la playlist: ").strip()
+                nombre_playlist = input("\t>> Indica cómo nombrar la playlist (dejar vacío para asignar el predeterminado): ").strip()
 
                 archivos = descargar_playlist_youtube(url, nombre_playlist)
                 if archivos:
