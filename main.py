@@ -28,6 +28,26 @@ class logger:
         pass
 
 
+# -------------------
+# MÉTODOS AUXILIARES
+# -------------------
+def asignar_album_mp3(ruta_mp3, nombre_album):
+    try:
+        audio = EasyID3(ruta_mp3)
+        audio['album'] = nombre_album
+        audio.save()
+    except Exception as e:
+        print(f"\t\t>>> Error escribiendo metadatos en {ruta_mp3}: {e}")
+
+def asignar_numero_pista(ruta_mp3, numero_pista):
+    try:
+        audio = EasyID3(ruta_mp3)
+        audio['tracknumber'] = str(numero_pista)
+        audio.save()
+    except Exception as e:
+        print(f"\t\t>>> Error escribiendo metadatos en {ruta_mp3}: {e}")
+
+
 # --------------------------------
 # MÉTODO PARA ESCANEAR UN ARCHIVO
 # --------------------------------
@@ -128,10 +148,13 @@ def descargar_album_youtube(url, nombre_album=""):
             info = ydl.extract_info(url, download=True)
 
             if 'entries' in info:
+                n = 1
                 for entry in info['entries']:
                     if entry:
                         ruta_original = ydl.prepare_filename(entry)
                         ruta_mp3 = os.path.splitext(ruta_original)[0] + ".mp3"
+                        asignar_numero_pista(ruta_mp3, n)
+                        n+=1
                         archivos_descargados.append(ruta_mp3)
 
             print("\t\t>>> DESCARGA DEL ÁLBUM COMPLETA.\n")
@@ -146,16 +169,6 @@ def descargar_album_youtube(url, nombre_album=""):
 # -----------------------------------
 # MÉTODO PARA DESCARGAR UNA PLAYLIST
 # -----------------------------------
-
-# Método auxiliar
-def asignar_album_mp3(ruta_mp3, nombre_album):
-    try:
-        audio = EasyID3(ruta_mp3)
-        audio['album'] = nombre_album
-        audio.save()
-    except Exception as e:
-        print(f"\t\t>>> Error escribiendo metadatos en {ruta_mp3}: {e}")
-
 def descargar_playlist_youtube(url, nombre_playlist=""):
     os.makedirs(DIRECTORIO_SALIDA, exist_ok=True)
 
@@ -189,10 +202,13 @@ def descargar_playlist_youtube(url, nombre_playlist=""):
             info = ydl.extract_info(url, download=True)
 
             if 'entries' in info:
+                n = 1
                 for entry in info['entries']:
                     if entry:
                         ruta_original = ydl.prepare_filename(entry)
                         ruta_mp3 = os.path.splitext(ruta_original)[0] + ".mp3"
+                        asignar_numero_pista(ruta_mp3,n)
+                        n+=1
 
                         if nombre_playlist and os.path.exists(ruta_mp3):
                             asignar_album_mp3(ruta_mp3, nombre_playlist)
