@@ -8,8 +8,6 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir yt-dlp mutagen
 
-RUN freshclam
-
 COPY main.py .
 
 ENTRYPOINT ["python", "/app/main.py"]
