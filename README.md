@@ -15,9 +15,8 @@ Además, cada archivo descargado es analizado con el antivirus **ClamAV** antes 
 ### 1. Descargar la imagen de [Docker](https://hub.docker.com/r/curroayaladiaz/bajalo)
 
 ```bash
-docker pull curroayaladiaz/bajalo:<tag>
+docker pull curroayaladiaz/bajalo:latest
 ```
-> **_Tag_ actual**: 1.0
 
 ### 2. Ejecutar el contenedor
 
@@ -26,7 +25,7 @@ Para usar la aplicación basta con lanzar el contenedor vinculando la carpeta lo
 ```bash
 docker run --rm -it \
     -v $(pwd)/descargas:/descargas \
-    curroayaladiaz/bajalo:<tag>
+    curroayaladiaz/bajalo:latest
 ```
 
 ### 3. Funcionalidades
